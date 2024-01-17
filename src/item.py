@@ -1,3 +1,7 @@
+import csv
+import os
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -15,14 +19,23 @@ class Item:
         """
 
         # Присвоение атрибутов объекту
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
 
         # Добавление экземпляра в список всех экземпляров
         Item.all.append(self)
 
+    @property
+    def name(self) -> str:
+        return self.__name
 
+    @name.setter
+    def name(self, value: str) -> None:
+        if len(value) > 10:
+            self.__name = value[:10]
+        else:
+            self.__name = value
 
     def calculate_total_price(self) -> float:
         """
@@ -37,3 +50,24 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= self.pay_rate
+
+    @classmethod
+    def instantiate_from_csv(cls, file_path: str) -> None:
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        # Абсолютный путь к файлу items.csv
+        absolute_file_path = os.path.join(project_root, file_path)
+        cls.all.clear()  # Очистить список всех экземпляров перед добавлением новых
+        with open(absolute_file_path, mode='r', encoding='windows-1251') as file:
+            reader = csv.DictReader(file)
+            items = list(reader)
+            for item in items:
+                cls(
+                    name=item.get('name'),
+                    price=float(item.get('price')),
+                    quantity=int(item.get('quantity'))
+                )
+
+    @staticmethod
+    def string_to_number(string_number: str) -> int:
+        # Преобразование строки в число с плавающей точкой, а затем в целое число
+        return int(float(string_number))
