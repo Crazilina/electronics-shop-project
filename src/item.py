@@ -33,8 +33,7 @@ class Item:
     @name.setter
     def name(self, value: str) -> None:
         if len(value) > 10:
-            print("Exception: Длина наименования товара превышает 10 символов.")
-            self.__name = value[:10]  # Обрезаем имя до 10 символов
+            raise Exception("Длина наименования товара превышает 10 символов.")
         else:
             self.__name = value
 
@@ -70,5 +69,4 @@ class Item:
 
     @staticmethod
     def string_to_number(string_number: str) -> int:
-        # Преобразование строки в число с плавающей точкой, а затем в целое число
         return int(float(string_number))
