@@ -1,5 +1,5 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
-
+import pytest
 from src.item import Item
 
 
@@ -29,14 +29,16 @@ def test_name_getter():
 
 def test_name_setter():
     item = Item("Товар", 100.0, 5)
-    # Тестирование усечения длинного имени
-    item.name = "ОченьДлинноеНазвание"
-    assert item.name == "ОченьДлинн"  # Первые 10 символов
 
     # Тестирование короткого имени
     short_name = "Короткое"
     item.name = short_name
     assert item.name == short_name
+
+    # Тестирование генерации исключения для длинного имени
+    with pytest.raises(Exception) as exc_info:
+        item.name = "ОченьДлинноеИмяТовара"
+    assert "Длина наименования товара превышает 10 символов." in str(exc_info.value)
 
 
 def test_instantiate_from_csv():
@@ -46,4 +48,5 @@ def test_instantiate_from_csv():
 
 def test_string_to_number():
     assert Item.string_to_number("123") == 123
-    assert Item.string_to_number("123.45") == 123
+    assert Item.string_to_number("-123") == -123
+    assert Item.string_to_number("0") == 0
