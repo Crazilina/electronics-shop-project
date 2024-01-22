@@ -50,3 +50,15 @@ def test_string_to_number():
     assert Item.string_to_number("123") == 123
     assert Item.string_to_number("-123") == -123
     assert Item.string_to_number("0") == 0
+
+
+def test_repr():
+    item = Item("Тестовый товар", 100.0, 5)
+    expected_repr = "Item('Тестовый товар', 100.0, 5)"
+    assert repr(item) == expected_repr
+
+
+def test_str():
+    item = Item("Тестовый товар", 100.0, 5)
+    expected_str = "Тестовый товар"
+    assert str(item) == expected_str
