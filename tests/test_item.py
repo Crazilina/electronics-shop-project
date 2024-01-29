@@ -62,3 +62,17 @@ def test_str():
     item = Item("Тестовый товар", 100.0, 5)
     expected_str = "Тестовый товар"
     assert str(item) == expected_str
+
+
+def test_add_items():
+    item1 = Item("Item1", 100, 5)
+    item2 = Item("Item2", 200, 10)
+
+    assert item1 + item2 == 15
+
+
+def test_add_item_with_non_item():
+    item = Item("Тестовый товар", 100.0, 5)
+    non_item = "не товар"  # Это может быть любой объект, не являющийся Item или Phone
+
+    assert (item + non_item) is None
