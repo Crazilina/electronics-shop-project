@@ -76,3 +76,9 @@ class Item:
 
     def __str__(self) -> str:
         return self.name
+
+    def __add__(self, other):
+        from .phone import Phone
+        if isinstance(other, (Item, Phone)):
+            return self.quantity + other.quantity
+        return None
