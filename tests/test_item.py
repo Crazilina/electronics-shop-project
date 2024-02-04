@@ -1,6 +1,6 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import pytest
-from src.item import Item
+from src.item import Item, InstantiateCSVError
 
 
 def test_item_creation():
@@ -42,7 +42,7 @@ def test_name_setter():
 
 
 def test_instantiate_from_csv():
-    Item.instantiate_from_csv('src/items.csv')
+    Item.instantiate_from_csv('items.csv')
     assert len(Item.all) > 0  # Проверяем, что список не пуст
 
 
@@ -76,3 +76,16 @@ def test_add_item_with_non_item():
     non_item = "не товар"  # Это может быть любой объект, не являющийся Item или Phone
 
     assert (item + non_item) is None
+
+
+def test_instantiate_from_csv_file_not_found():
+    with pytest.raises(FileNotFoundError) as e:
+        # Указываем путь к несуществующему файлу
+        Item.instantiate_from_csv('nonexistent.csv')
+    assert "Отсутствует файл items.csv" in str(e.value)
+
+
+def test_instantiate_from_csv_damaged_file():
+    with pytest.raises(InstantiateCSVError) as e:
+        Item.instantiate_from_csv('damaged_items.csv')
+    assert "Файл item.csv поврежден" in str(e.value)
